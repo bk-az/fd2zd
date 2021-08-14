@@ -1,25 +1,25 @@
 # Freshdesk to Zendesk Migration
 Migrate your Freshdesk users, tickets and tickets conversations / comments to Zendesk.
 ## Setup
-Before migrating tickets you need to setup the environment and install necessary packages.
+Before migrating tickets you need to set up the environment and install the necessary packages.
 ### Install Ruby
-The version of Ruby used during development was 2.7.1, in order to use other versions of ruby you may need to update the Gemfile.
+The version of Ruby used during development was 2.7.1, to use other versions of ruby you may need to update the Gemfile.
 ### Install MySQL
-MySQL is used as a relational database management system, which is used to store tickets locally for successful ticket migration, monitoring progress and also for post-migration verification.
+MySQL is used as a relational database management system, which is used to store tickets locally for successful ticket migration, monitoring progress, and post-migration verification.
 ### Install Dependencies
-After installation of Ruby and MySQL, run below command to install the requirements.
+After installation of Ruby and MySQL, run the below command to install the requirements.
 ```sh
 bundle install
 ```
 ### Configure
-Open `fd2zd.rb` file and update the configurations. For **Freshdesk** you will need to update following configurations:
+Open `fd2zd.rb` file and update the configurations. For **Freshdesk** you will need to update the following configurations:
 - `subdomain` - Subdomain of Freshdesk account
 - `api_token` - Your Freshdesk API Key
 - `include_conversations` - Import conversations of each ticket as well
 - `filter` - Define criteria to migrate only required tickets
 - `tickets_updated_since` - This should be set to any date which is older than your Freshdesk account creation date
 
-For **Zendesk**, update following configurations:
+For **Zendesk**, update the following configurations:
 - `subdomain` - Subdomain of your Zendesk account
 - `api_token` - API Token created in your Zendesk account
 - `admin_email` - Admin Email of Zendesk account.
@@ -33,25 +33,25 @@ For **Databse** you will need to update these configurations:
 - `database` - Database Name
 
 ### Setup Zendesk Account
-Before migration, you should setup Zendesk account for migration.
+Before migration, you should set up Zendesk account for migration.
 - Disable the welcome email notification for new end users.
 - Create a [sandbox](https://support.zendesk.com/hc/en-us/articles/203661826-Testing-changes-in-your-standard-sandbox) instance to test the migration.
 
 ## Migrate Data
 ### Load required data in database
-Run the command below to create and setup database.
+Run the command below to create and set up a database.
 ```sh
 bundle exec rake db:prepare
 ```
-After the databse is prepared, we can load tickets in the database.
+After the database is prepared, we can load tickets in the database.
 ```sh
 bundle exec rake fd2zd:load_tickets
 ```
-Load agents in database as well:
+Load agents in the database as well:
 ```sh
 bundle exec rake fd2zd:load_resources CLASS=Agent
 ```
-To load contacts in database you have two options
+To load contacts in the database you have two options
 1. Load all contacts
 2. Load only required contacts (having tickets that will be migrated to Zendesk)
 
@@ -64,9 +64,9 @@ To load only required contacts:
 bundle exec rake fd2zd:load_required_contacts
 ```
 ### Import Users
-Once you have required users in the database, you can import them in your Zendesk account. A user is only imported if it doesn't already exists in Zendesk.
+Once you have required users in the database, you can import them into your Zendesk account. A user is only imported if it doesn't already exist in Zendesk.
 #### User Fields Mapping
-Before migrating users, you may want to customize the fields mapping. To do so, open the file `lib/converters/user_converter.rb`. The `UserConverter` class can be changed to customize the migration of users.
+Before migrating users, you may want to customize the mapping of the fields. To do so, open the file `lib/converters/user_converter.rb`. The `UserConverter` class can be changed to customize the migration of users.
 
 #### Import
 Run the command below to import users.
@@ -77,7 +77,7 @@ If the number of users to import is large, you may want to monitor the progress.
 ```sh
 bundle exec rake fd2zd:users_import_job_status
 ```
-After completion of users import job, you can verify the migration by running this command:
+After completion of the users import job, you can verify the migration by running this command:
 ```sh
 bundle exec rake fd2zd:verify_users_import
 ```
@@ -85,7 +85,7 @@ bundle exec rake fd2zd:verify_users_import
 After you have imported all required users from your Freshdesk account to Zendesk, you are ready to import tickets.
 
 #### Ticket Fields Mapping
-Just like `UserConverter`, the `TicketConverter` class is used to convert Freshdesk ticket into Zendesk ticket. The class is defined in file `lib/converters/ticket_converter.rb`. You can customize this class to control the fields mapping.
+Like `UserConverter`, the `TicketConverter` class converts Freshdesk ticket into Zendesk ticket. The class is defined in file `lib/converters/ticket_converter.rb`. You can customize this class to control the mapping of the fields.
 
 #### Import
 Once the `TicketConverter` class is ready, you can run the below command to start migration.
@@ -102,4 +102,4 @@ To verify the tickets import, after the import job is completed, run this comman
 bundle exec rake fd2zd:verify_tickets_import
 ```
 
-To further customize the import job, you can edit `lib/zendesk/tickets_import_service.rb` file.
+To customize the import job further, you can edit the `lib/zendesk/tickets_import_service.rb` file.
