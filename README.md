@@ -1,9 +1,9 @@
 # Freshdesk to Zendesk Migration
-Migrate your Freshdesk users, tickets and tickets conversations / comments to Zendesk.
+Migrate your Freshdesk users, tickets and conversations / comments to Zendesk.
 ## Setup
 Before migrating tickets you need to set up the environment and install the necessary packages.
 ### Install Ruby
-The version of Ruby used during development was 2.7.1, to use other versions of ruby you may need to update the Gemfile.
+Follow this [link](https://rubyreferences.github.io/rubyref/intro/installation.html) to install Ruby on your system. The version of Ruby used during development was 2.7.1, to use other versions of ruby you may need to update the Gemfile.
 ### Install MySQL
 MySQL is used as a relational database management system, which is used to store tickets locally for successful ticket migration, monitoring progress, and post-migration verification.
 ### Install Dependencies
@@ -25,7 +25,7 @@ For **Zendesk**, update the following configurations:
 - `admin_email` - Admin Email of Zendesk account.
 - `jobs_count` - Number of Import Jobs to start in parallel to speed up the process.
 
-For **Databse** you will need to update these configurations:
+For **Database** you will need to update these configurations:
 - `adapter` - Database adapter
 - `encoding` - Character Set Encoding
 - `username` - Database Username
