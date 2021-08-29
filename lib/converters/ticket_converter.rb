@@ -3,6 +3,27 @@
 class TicketConverter
   attr_reader :fd_ticket
 
+  # === IMPORTANT ===
+  #
+  # Enter default values for requester_id and assignee_id.
+  # This will be used if an agent / customer of freshdesk
+  # is not present in zendesk, which is possible if fd user is
+  # not valid, e.g, having blank email.
+  #
+  # For example:
+  #
+  # DEFAULTS = {
+  #   assignee_id: 1234567890,
+  #   requester_id: 1234567890,
+  #   author_id: 1234567890,
+  # }
+  #
+  DEFAULTS = {
+    assignee_id: nil,
+    requester_id: nil,
+    author_id: nil, # comment author id
+  }.freeze
+
   # Freshdesk to Zendesk status
   STATUS = {
     1 => 'new',
@@ -54,11 +75,11 @@ class TicketConverter
   end
 
   def assignee_id
-    user_zd_id(fd_ticket['responder_id']) || 386105194560
+    user_zd_id(fd_ticket['responder_id']) || DEFAULTS[:assignee_id]
   end
 
   def requester_id
-    user_zd_id(fd_ticket['requester_id'])
+    user_zd_id(fd_ticket['requester_id']) || DEFAULTS[:requester_id]
   end
 
   def subject
@@ -131,7 +152,7 @@ class TicketConverter
   def user_zd_id(fd_id)
     return if fd_id.blank?
 
-    self.class.user_ids_mapping.fetch(fd_id)
+    self.class.user_ids_mapping[fd_id]
   end
 
   def utc_time(time)

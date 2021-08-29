@@ -22,6 +22,10 @@ Freshdesk.configure do |config|
   config.subdomain = 'FRESHDESK_SUBDOMAIN'
   config.api_token = 'FRESHDESK_API_TOKEN'
   config.include_conversations = true
+  # only import tickets with status IN (4, 5)
+  # to import all tickets you can simply return true, for example:
+  #
+  # config.filter = ->(ticket) { true }
   config.filter = ->(ticket) { ticket['status'] == 4 || ticket['status'] == 5 }
   config.tickets_updated_since = '2010-01-01'
 end
