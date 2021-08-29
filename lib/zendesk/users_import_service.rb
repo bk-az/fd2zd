@@ -50,7 +50,9 @@ module Zendesk
       LOGGER.info 'Building Users Hash...'
       hash = Hash.new { |h, k| h[k] = [] }
       User.where.not(status: 'synced').find_each do |user|
-        email = user.columns['email'].presence || user.columns['contact']['email']
+        email = user.columns['email'].presence || user.columns.dig('contact', 'email')
+        next if email.blank?
+
         hash[email.downcase] << user.id
         LOGGER.info "#{hash.length} users processed" if (hash.length % 5000).zero?
       end

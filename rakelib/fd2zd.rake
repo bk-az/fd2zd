@@ -84,11 +84,11 @@ namespace :fd2zd do
       user = User.find_by(zd_id: zd_user['id'])
       next if user.nil?
 
-      email = (user.columns['email'].presence || user.columns['contact']['email']).downcase
+      email = (user.columns['email'].presence || user.columns.dig('contact', 'email').to_s).downcase
       if email == zd_user['email'] && (zd_user['external_id'].blank? || user.fd_id.to_s == zd_user['external_id'].gsub(/[^0-9]/, ''))
         verified_count += 1
       else
-        raise "Invalid User Import Found, FD_ID: #{user.fd_id}, ZD_ID: #{user.zd_id}, EMAIL: #{email}"
+        LOGGER.error "Invalid User Import Found, FD_ID: #{user.fd_id}, ZD_ID: #{user.zd_id}, EMAIL: #{email}"
       end
 
       LOGGER.info "Verified #{verified_count} users" if (verified_count % 1000).zero?
@@ -146,7 +146,7 @@ namespace :fd2zd do
     LOGGER.info "All tickets verified, total count: #{count.length}"
 
     if count.values.max > 1
-      LOGGER.error 'Multiple tickets found against single FD ID, check "count_hash.yml" for detail'
+      LOGGER.error 'Multiple tickets found against single FD ID, check "count_hash.yml" which contains count of each zendesk ticket created against freshdesk ticket id.'
     end
 
     File.open('count_hash.yml', 'w') { |file| file.write(count.to_yaml) }
