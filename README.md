@@ -87,7 +87,7 @@ After you have imported all required users from your Freshdesk account to Zendes
 #### Ticket Fields Mapping
 Like `UserConverter`, the `TicketConverter` class converts Freshdesk ticket into Zendesk ticket. The class is defined in file `lib/converters/ticket_converter.rb`. You can customize this class to control the mapping of the fields.
 
-**Important:** In `lib/converters/ticket_converter.rb` file, enter default values for `assignee_id`, `requester_id`, `author_id`, otherwise your tickes will not be imported if your Freshdesk agent / customer does not exists in Zendesk.
+**Important:** In `lib/converters/ticket_converter.rb` file, enter default values for `assignee_id`, `requester_id`, `author_id`, otherwise your tickets will not be imported if your Freshdesk agent / customer does not exist in Zendesk.
 
 #### Import
 Once the `TicketConverter` class is ready, you can run the below command to start migration.<br/>

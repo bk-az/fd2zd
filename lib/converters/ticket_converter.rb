@@ -3,7 +3,7 @@
 class TicketConverter
   attr_reader :fd_ticket
 
-  # === IMPORTANT (required) ===
+  # === IMPORTANT ===
   #
   # Enter default values for requester_id and assignee_id.
   # This will be used if an agent / customer of freshdesk
